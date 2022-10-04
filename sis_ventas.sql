@@ -51,5 +51,6 @@ id_detalle int unsigned auto_increment primary key,
 id_producto int unsigned not null,
 id_venta int unsigned not null,
 cantidad int not null,
-foreign key(id_cliente) references cliente(id_cliente)
+foreign key(id_producto) references producto(id_producto),
+foreign key(id_venta) references venta(id_venta)
 );
