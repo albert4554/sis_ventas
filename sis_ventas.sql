@@ -1,6 +1,6 @@
 
 drop database if exists sis_ventas;
-create database sis_ventas character set uft8mb4;
+create database sis_ventas;
 use sis_ventas;
 
 create table proveedor(
