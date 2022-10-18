@@ -117,3 +117,26 @@ INSERT INTO detalle_venta (`id_detalle`,`id_producto`,`id_venta`,`cantidad`) VAL
 INSERT INTO detalle_venta (`id_detalle`,`id_producto`,`id_venta`,`cantidad`) VALUES (8,3,8,7);
 INSERT INTO detalle_venta (`id_detalle`,`id_producto`,`id_venta`,`cantidad`) VALUES (9,5,9,1);
 INSERT INTO detalle_venta (`id_detalle`,`id_producto`,`id_venta`,`cantidad`) VALUES (10,5,10,2);
+
+
+/*------------VISTAS----------------*/
+/*Clientes Varones*/
+create view Vista_cliente_Varones as 
+select * from cliente
+where sexo='H';
+/*Clientes Mujeres*/
+create view Vista_cliente_Mujeres as select * from cliente
+where sexo='M';
+
+/*Ventas por cliente*/
+create view Vista_cliente_Ventas as select c.nombre, count(v.id_cliente) as cantidad_ventas from 
+cliente c inner join venta v on c.id_cliente =v.id_cliente
+group by v.id_cliente;
+
+/*Ventas por Producto*/
+create view Vista_ventas_x_producto as select p.nombre, count(dv.id_producto) as cantidad_ventas from producto p inner join detalle_venta dv on p.id_producto= dv.id_producto
+group by dv.id_producto;
+
+/*Cantidad vendida por producto*/
+create view Vista_cantidad_vendida_x_producto as select p.nombre, sum(dv.cantidad) as cantidad from producto p inner join detalle_venta dv on p.id_producto= dv.id_producto
+group by dv.id_producto;
