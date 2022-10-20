@@ -140,3 +140,35 @@ group by dv.id_producto;
 /*Cantidad vendida por producto*/
 create view Vista_cantidad_vendida_x_producto as select p.nombre, sum(dv.cantidad) as cantidad from producto p inner join detalle_venta dv on p.id_producto= dv.id_producto
 group by dv.id_producto;
+
+/* --------------FUNCIONES----------------------*/
+/*FUNCION NOMBRE_CLIENTE*/
+DELIMITER $$
+CREATE FUNCTION NOMBRE_CLIENTE (ID_CLI INT)
+RETURNS VARCHAR(100)
+READS SQL DATA
+BEGIN
+	DECLARE RESPUESTA VARCHAR(100);
+     IF ID_CLI = 0 THEN 
+     SET RESPUESTA = "INGRESA UN NUMERO MAYOR QUE CERO";
+     ELSE
+     SET RESPUESTA = (SELECT CONCAT(id_cliente, ' ' ,nombre) 
+     FROM cliente WHERE id_cliente = ID_CLI);
+     END IF;
+	RETURN RESPUESTA;
+END$$
+
+DELIMITER ;
+
+/*FUNCION PRECIO_DE_VENTA*/
+
+DELIMITER $$
+CREATE FUNCTION PRECIO_DE_VENTA (CANTIDAD INT, PRECIO FLOAT,DESCUENTO FLOAT)
+RETURNS FLOAT
+NO SQL
+BEGIN
+	DECLARE resultado FLOAT;
+    SET resultado = cantidad*(precio-descuento);
+	RETURN resultado;
+END$$
+DELIMITER ;
