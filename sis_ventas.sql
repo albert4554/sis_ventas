@@ -172,3 +172,45 @@ BEGIN
 	RETURN resultado;
 END$$
 DELIMITER ;
+/* --------------PROCEDIMIENTOS ALMACENADOS----------------------*/
+/*Procedimiento para ordenar*/
+DROP PROCEDURE IF EXISTS sp_order_table;
+DELIMITER //
+create procedure sp_order_table(
+in campo varchar(255), 
+in tipo_ordenamiento enum('asc','desc',''), 
+in tabla varchar(200)
+)
+begin 
+      if campo <> '' then 
+          set @ordenar = concat(' order by  ', campo);
+      else
+          set @ordenar = '';
+      end if;
+      if tipo_ordenamiento <> '' then 
+          set @tipo= concat(' ', tipo_ordenamiento);
+      else
+          set @tipo = '';
+      end if;
+      set @clausula = concat('select * from  ',tabla,@ordenar,@tipo);
+      prepare ejecutarSQL from @clausula;
+      execute ejecutarSQL;
+      deallocate prepare ejecutarSQL;
+end 
+//
+call sp_order_table('precio','desc','producto');
+
+/*Procedimiento para evaluar documento duplicado*/
+
+DROP PROCEDURE IF EXISTS sp_check_duplicado;
+DELIMITER //
+create procedure sp_check_duplicado(IN n varchar(24))
+begin 
+if (select count(*) from cliente where doc_identidad=n )>0 then 
+	   select 'duplicado' as estado;
+else 
+       select 'registrado' as estado;
+end if ;
+end 
+//
+call sp_check_duplicado('04233869Y');
