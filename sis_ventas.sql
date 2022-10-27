@@ -214,3 +214,61 @@ end if ;
 end 
 //
 call sp_check_duplicado('04233869Y');
+
+
+/*-----------------------TRIGGERS---------------------------------*/
+/*bitacora proveedor*/
+drop table espejo_proveedor; 
+create table if not exists espejo_proveedor (
+id int not null auto_increment,
+fecha datetime not null,
+hora datetime not null,
+usuario_id varchar(45),
+tipo_operacion varchar(45),
+primary key(id));
+
+/*Triger al insertar un nuevo registro*/
+create trigger insertar_log 
+after insert on proveedor 
+for each row
+insert into espejo_proveedor (fecha,hora,usuario_id,tipo_operacion)
+values
+(now(),curtime(),session_user(),'se inserta data');
+
+/*Triger al editar un registro*/
+create trigger update_log
+after update on proveedor
+for each row
+insert into espejo_proveedor 
+(fecha,hora,usuario_id,tipo_operacion)
+values
+(now(),curtime(),session_user(),'se actualiza dato');
+
+/*bitacora producto*/
+drop table espejo_producto; 
+create table if not exists espejo_producto (
+id int not null auto_increment,
+fecha datetime not null,
+hora datetime not null,
+usuario_id varchar(45),
+old_dato int,
+new_dato int,
+tipo_operacion varchar(45),
+primary key(id));
+
+/*Triger al insertar un nuevo registro*/
+create trigger insertar_log1 
+after insert on producto 
+for each row
+insert into espejo_producto(fecha,hora,usuario_id,new_dato,tipo_operacion)
+values
+(now(),curtime(),session_user(),NEW.precio,'se inserta data');
+
+/*Triger al editar un registro*/
+create trigger update_log1
+after update on producto
+for each row
+insert into espejo_producto 
+(fecha,hora,usuario_id,old_dato,new_dato,tipo_operacion)
+values
+(now(),curtime(),session_user(),OLD.precio,NEW.precio,'se actualiza dato');
