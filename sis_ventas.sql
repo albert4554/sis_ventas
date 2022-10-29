@@ -272,3 +272,17 @@ insert into espejo_producto
 (fecha,hora,usuario_id,old_dato,new_dato,tipo_operacion)
 values
 (now(),curtime(),session_user(),OLD.precio,NEW.precio,'se actualiza dato');
+
+
+
+
+/*Probando trigger de la tabla proveedor*/
+
+insert into proveedor values (null,'santino','789654123','las palmeras 5768','70385433');
+update proveedor set nombre='alberto' where nombre='albert';
+SET SQL_SAFE_UPDATES = 0;
+select * from espejo_proveedor;
+/*Probando trigger de la tabla producto*/
+insert into producto values(null,1,5,'silla gamer',599,15);
+update producto set precio=1000 where id_producto=1;
+select * from espejo_producto;
