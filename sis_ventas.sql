@@ -300,3 +300,15 @@ select * from espejo_proveedor;
 insert into producto values(null,1,5,'silla gamer',599,15);
 update producto set precio=1000 where id_producto=1;
 select * from espejo_producto;
+
+/*-------------Creacion y Permisos de usuario -------------------*/
+/*Elimina usuarios creados*/
+drop user 'coderhouse'@'localhost';
+drop user 'coderhouse1'@'localhost';
+/*Creacion de los nuevos usuarios*/
+create user 'prueba'@'localhost' identified by 'mipassword';
+create user 'coderhouse'@'localhost' identified by 'mipassword1';
+/*Permiso de solo lectura sobre todas las tablas de sis_ventas*/
+grant select on sis_ventas.* to 'prueba'@'localhost';
+/*Permiso de Lectura, Insercion y modificicacion de datos sobre todas las tablas de sis_ventas*/
+grant select,insert,update on sis_ventas.* to 'coderhouse'@'localhost';
