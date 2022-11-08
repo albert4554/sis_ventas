@@ -312,3 +312,29 @@ create user 'coderhouse'@'localhost' identified by 'mipassword1';
 grant select on sis_ventas.* to 'prueba'@'localhost';
 /*Permiso de Lectura, Insercion y modificicacion de datos sobre todas las tablas de sis_ventas*/
 grant select,insert,update on sis_ventas.* to 'coderhouse'@'localhost';
+
+/*--------------------Sentencias del sublenguaje TCL----------------------------*/
+set autocommit=0;
+SET SQL_SAFE_UPDATES=0;
+/*Eliminando una categoria*/
+start transaction;
+delete from categoria where id_categoria=1;
+select * from categoria;
+commit;
+rollback;
+/*Insertando registros en la tabla proveedor*/
+start transaction;
+savepoint inicio;
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('franco','933475707','los melones 789','703859624');
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Ana','930069707','Av el angel','70385753');
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Jimena','955666321','Jr manzanilla','89564531');
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Julisa','999666333','Los claveles','45632184');
+savepoint lote1al4;
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Jefferson','966333222','Los olvidados','12345685');
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Paul','988444555','Medalla milagrosa','75365412');
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Ronny','977555444','Jr san diego','74185263');
+insert into  proveedor (nombre,telefono,direccion,doc_identidad) values ('Aldo','977445523','Av san martin','98745214');
+savepoint lote4al8;
+
+select * from proveedor;
+rollback to lote1al4;
